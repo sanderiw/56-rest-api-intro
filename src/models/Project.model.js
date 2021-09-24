@@ -6,7 +6,7 @@ const projectSchema = new Schema({
   startDate: { type: Date, default: Date.now },
   endDate: Date,
   budget: { type: Number, min: 0 },
-  projectOwner: { type: String, trim: true, required: true },
+  projectOwner: { type: Types.ObjectId, ref: "User" },
   tasks: [{ type: Types.ObjectId, ref: "Task" }],
 });
 

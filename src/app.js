@@ -1,3 +1,4 @@
+require("dotenv").config({ path: require("find-config")(".env") });
 const express = require("express");
 
 const initDb = require("./config/db.config");
@@ -15,10 +16,13 @@ const projectRouter = require("./routes/project.routes");
 app.use(`/api/v${API_VERSION}`, projectRouter);
 const taskRouter = require("./routes/task.routes");
 app.use(`/api/v${API_VERSION}`, taskRouter);
+const userRouter = require("./routes/user.routes");
+app.use(`/api/v${API_VERSION}`, userRouter);
 
 // Rota de captura de erros para padronização dos erros internos
 app.use((err, req, res, next) => {
   if (err) {
+    console.error(err);
     return res.status(500).json({
       msg: "Erro interno no servidor.",
       err: err,

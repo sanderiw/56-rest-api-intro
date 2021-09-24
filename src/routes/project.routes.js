@@ -4,17 +4,19 @@ const ProjectModel = require("../models/Project.model");
 // Importando a definição de tipo dos _ids do Mongo
 const { ObjectId } = require("mongoose").Types;
 
+const isAuthenticated = require("../middlewares/isAuthenticated");
+
 // CRUD de projeto
 
 // Definindo nossos route listeners
 
 // Crud (Create) => POST
-router.post("/project", (req, res, next) => {
+router.post("/project", isAuthenticated, (req, res, next) => {
   // Os dados enviados pelo cliente (pode ser o Insomnia ou o Axios no React) estarão no objeto req.body
   console.log(req.body);
 
   // Inserindo os dados no banco
-  ProjectModel.create(req.body)
+  ProjectModel.create({ ...req.body, projectOwner: req.user._id })
     .then((result) => {
       // Result vai ser o objeto criado no MongoDB
       return res.status(201).json(result);
@@ -24,8 +26,10 @@ router.post("/project", (req, res, next) => {
 });
 
 // cRud (Read) => GET (Lista)
-router.get("/project", (req, res, next) => {
-  ProjectModel.find()
+router.get("/project", isAuthenticated, (req, res, next) => {
+  console.log(req.user);
+
+  ProjectModel.find({ projectOwner: req.user._id })
     .then((result) => {
       return res.status(200).json(result);
     })
