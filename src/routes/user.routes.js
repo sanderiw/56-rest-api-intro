@@ -31,7 +31,10 @@ router.post("/signup", (req, res, next) => {
 
   // Inserir o usuário no banco
   UserModel.create({ name, email, passwordHash })
-    .then((result) => res.status(201).json(result))
+    .then((result) => {
+      const { name, email, _id } = result;
+      return res.status(201).json({ name, email, _id });
+    })
     .catch((err) => {
       console.error(err);
       return next(err);

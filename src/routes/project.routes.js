@@ -30,6 +30,7 @@ router.get("/project", isAuthenticated, (req, res, next) => {
   console.log(req.user);
 
   ProjectModel.find({ projectOwner: req.user._id })
+    .populate("projectOwner")
     .then((result) => {
       return res.status(200).json(result);
     })

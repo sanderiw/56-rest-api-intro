@@ -1,4 +1,5 @@
 require("dotenv").config({ path: require("find-config")(".env") });
+const cors = require("cors");
 const express = require("express");
 
 const initDb = require("./config/db.config");
@@ -10,6 +11,8 @@ const app = express();
 
 // Configurando o express para aceitar requisições com o body no formato JSON
 app.use(express.json());
+// Configurando o express para aceitar requisições deste domínio (nosso App React)
+app.use(cors({ origin: "http://localhost:3000" }));
 
 const projectRouter = require("./routes/project.routes");
 // Redirecionando todas as requisições para os roteadores
@@ -23,7 +26,7 @@ app.use(`/api/v${API_VERSION}`, userRouter);
 app.use((err, req, res, next) => {
   if (err) {
     console.error(err);
-    return res.status(500).json({
+    return res.status(err.status || 500).json({
       msg: "Erro interno no servidor.",
       err: err,
     });
