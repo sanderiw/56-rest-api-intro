@@ -8,7 +8,7 @@ const taskSchema = new Schema({
     enum: ["A fazer", "Fazendo", "Feito"],
     default: "A fazer",
   },
-  taskOwner: { type: String, trim: true, required: true },
+  taskOwner: { type: Types.ObjectId, ref: "User" },
   projectId: { type: Types.ObjectId, ref: "Project", required: true },
 });
 

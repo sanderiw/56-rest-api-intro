@@ -42,6 +42,7 @@ router.get("/project/:id", (req, res, next) => {
   ProjectModel.findOne({ _id: req.params.id })
     // O populate vai "popular" automaticamente o campo tasks do projeto com os objetos completos de tarefa, ao invés de trazer somente o id
     .populate("tasks")
+    .populate("projectOwner")
     // Caso quiséssemos apenas alguns campos da tarefa, poderíamos usar a chave select
     // .populate({
     //   path: "tasks",
